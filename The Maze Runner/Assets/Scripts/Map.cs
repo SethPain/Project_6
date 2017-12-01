@@ -6,19 +6,21 @@ using MapGen;
 public class Map : MonoBehaviour {
 
     
-    public Transform wall;
-    public Transform floor;
-    public Transform start;
-    public Transform goal;
-    public Transform bound;
-    public Transform player;
+    public GameObject wall;
+    public GameObject floor;
+    public GameObject start;
+    public GameObject goal;
+    public GameObject bound;
+    public GameObject player;
+    PrimGenerator prim;
+    public MapTile[,] tiles;
 
     // Use this for initialization
     void Start () {
-        PrimGenerator prim = new PrimGenerator();
+        prim = new PrimGenerator();
 
         // generate a map of size 30x30 with half of the walls removed after generation
-        MapTile[,] tiles2 = prim.MapGen(30, 30, 0.15f);
+        tiles = prim.MapGen(30, 30, 0.15f);
 
         for (int i = 0; i < 30; i++)
         {
@@ -28,20 +30,20 @@ public class Map : MonoBehaviour {
             {
                 Instantiate(bound, new Vector3(-1, 2, y), Quaternion.identity);
                 Instantiate(bound, new Vector3(30, 2, y), Quaternion.identity);
-                if (tiles2[i, y].Walkable == true)
+                if (tiles[i, y].Walkable == true)
                 {
-                    if (tiles2[i, y].IsStart)
+                    if (tiles[i, y].IsStart)
                     {
-                        Instantiate(start, new Vector3(tiles2[i, y].X, .005f, tiles2[i, y].Y), Quaternion.identity);
-                        Instantiate(player, new Vector3(tiles2[i, y].X, 1.5f, tiles2[i, y].Y), Quaternion.identity);
+                        Instantiate(start, new Vector3(tiles[i, y].X, .005f, tiles[i, y].Y), Quaternion.identity);
+                        player.transform.position = new Vector3(tiles[i, y].X, 1, tiles[i, y].Y);
                     }
-                    else if (tiles2[i, y].IsGoal)
-                        Instantiate(goal, new Vector3(tiles2[i, y].X, .005f, tiles2[i, y].Y), Quaternion.identity);
+                    else if (tiles[i, y].IsGoal)
+                        Instantiate(goal, new Vector3(tiles[i, y].X, .005f, tiles[i, y].Y), Quaternion.identity);
                     else
-                        Instantiate(floor, new Vector3(tiles2[i, y].X, .005f, tiles2[i, y].Y), Quaternion.identity);
+                        Instantiate(floor, new Vector3(tiles[i, y].X, .005f, tiles[i, y].Y), Quaternion.identity);
                 }
                 else
-                    Instantiate(wall, new Vector3(tiles2[i, y].X, 1, tiles2[i, y].Y), Quaternion.identity);
+                    Instantiate(wall, new Vector3(tiles[i, y].X, 1, tiles[i, y].Y), Quaternion.identity);
             }
         }
     }

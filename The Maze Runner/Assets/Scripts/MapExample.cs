@@ -5,7 +5,7 @@ using MapGen;
 
 public class MapExample : MonoBehaviour
 {
-    int choice;
+    public int choice;
     public Transform wall;
     public Transform floor;
     public Transform start;
@@ -13,7 +13,6 @@ public class MapExample : MonoBehaviour
 
 	void Start ()
     {
-        choice = 2;
         PrimGenerator primGen = new PrimGenerator();
         PerlinGenerator perlinGen = new PerlinGenerator();
 
@@ -22,7 +21,7 @@ public class MapExample : MonoBehaviour
 
             case 1:
                 // generate a map of size 20x20 with no extra walls removed
-                MapTile[,] tiles1 = primGen.MapGen(20, 20, 0.0f);
+                MapTile[,] tiles1 = primGen.MapGen(20, 20, 0.25f);
                 for (int i = 0; i < 20; i++)
                 {
                     for (int y = 0; y < 20; y++)

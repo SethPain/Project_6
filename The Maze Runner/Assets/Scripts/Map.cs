@@ -5,7 +5,7 @@ using MapGen;
 
 public class Map : MonoBehaviour {
 
-    
+
     public GameObject wall;
     public GameObject floor;
     public GameObject start;
@@ -13,14 +13,21 @@ public class Map : MonoBehaviour {
     public GameObject bound;
     public GameObject player;
     PrimGenerator prim;
-    public MapTile[,] tiles;
+    MapTile[,] tiles;
 
-    // Use this for initialization
-    void Start () {
+    void Awake()
+    {
         prim = new PrimGenerator();
 
         // generate a map of size 30x30 with half of the walls removed after generation
         tiles = prim.MapGen(30, 30, 0.15f);
+    }
+
+    // Use this for initialization
+    void Start() {
+        
+
+        
 
         for (int i = 0; i < 30; i++)
         {
@@ -46,6 +53,11 @@ public class Map : MonoBehaviour {
                     Instantiate(wall, new Vector3(tiles[i, y].X, 1, tiles[i, y].Y), Quaternion.identity);
             }
         }
+    }
+
+    public MapTile[,] getTiles()
+    {
+        return tiles;
     }
 	
 	

@@ -3,60 +3,67 @@ using System.Collections.Generic;
 using UnityEngine;
 using MapGen;
 
-public class Node : MonoBehaviour {
+public class Node : System.IEquatable<Node> {
 
     public MapTile tile;
-    public Vector3 location;
     public float g;
     public float h;
     public float f;
-    public bool walkable;
     public Node parent;
 
     public Node()
     {
         tile = new MapTile();
-        location = new Vector3();
         g = 0;
         h = 0;
         f = g + h;
-        walkable = false;
     }
-    
+
 
     public Node(MapTile tile)
     {
         this.tile = tile;
-        this.location = new Vector3(tile.X, 0, tile.Y);
         g = 0;
         h = 0;
         f = g + h;
         parent = new Node();
-        walkable = tile.Walkable;
     }
 
     public Node(MapTile tile, float g, float h, Node parent)
     {
         this.tile = tile;
-        this.location = new Vector3(tile.X, 0, tile.Y);
         this.g = g;
         this.h = h;
         f = g + h;
         this.parent = parent;
-        walkable = tile.Walkable;
     }
 
 
-    public MapTile getTile()
+    public bool Equals(Node node)
     {
-        return tile;
-    }
-
-    public bool compareTile(MapTile tile)
-    {
-        if (this.tile.CompareTo(tile) > 0)
+        if (node.tile.X == tile.X && node.tile.Y == tile.Y)
             return true;
         else
             return false;
-    } 
+    }
+
+    public string toString()
+    {
+        return "(" + tile.X + "," + tile.Y + ")";
+    }
+
+    public List<MapTile> adjacents(MapTile[,] map)
+    {
+        List<MapTile> list = new List<MapTile>();
+        if (tile.X + 1 < 30)
+            list.Add(map[tile.X + 1, tile.Y]);
+        if (tile.X - 1 >= 0)
+            list.Add(map[tile.X - 1, tile.Y]);
+        if (tile.Y + 1 < 30)
+            list.Add(map[tile.X, tile.Y + 1]);
+        if (tile.Y - 1 >= 0)
+            list.Add(map[tile.X, tile.Y - 1]);
+
+        return list;
+    }
 }

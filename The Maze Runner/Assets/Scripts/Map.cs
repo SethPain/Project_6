@@ -5,7 +5,9 @@ using MapGen;
 
 public class Map : MonoBehaviour {
 
-
+    public string primOrPerlin = "Prim";
+    public int dimension = 30;
+    public float removOrConstrain = 0.15f;
     public GameObject wall;
     public GameObject floor;
     public GameObject start;
@@ -13,14 +15,20 @@ public class Map : MonoBehaviour {
     public GameObject bound;
     public GameObject player;
     PrimGenerator prim;
+    PerlinGenerator perlin;
     MapTile[,] tiles;
 
     void Awake()
     {
+        
         prim = new PrimGenerator();
+        perlin = new PerlinGenerator();
 
         // generate a map of size 30x30 with half of the walls removed after generation
-        tiles = prim.MapGen(30, 30, 0.15f);
+        if (primOrPerlin == "Prim" || primOrPerlin == "prim")
+            tiles = prim.MapGen(dimension, dimension, removOrConstrain);
+        else
+            tiles = perlin.MapGen(dimension, dimension, removOrConstrain);
     }
 
     // Use this for initialization
@@ -29,14 +37,14 @@ public class Map : MonoBehaviour {
 
         
 
-        for (int i = 0; i < 30; i++)
+        for (int i = 0; i < dimension; i++)
         {
             Instantiate(bound, new Vector3(i, 2, -1), Quaternion.identity);
-            Instantiate(bound, new Vector3(i, 2, 30), Quaternion.identity);
-            for (int y = 0; y < 30; y++)
+            Instantiate(bound, new Vector3(i, 2, dimension), Quaternion.identity);
+            for (int y = 0; y < dimension; y++)
             {
                 Instantiate(bound, new Vector3(-1, 2, y), Quaternion.identity);
-                Instantiate(bound, new Vector3(30, 2, y), Quaternion.identity);
+                Instantiate(bound, new Vector3(dimension, 2, y), Quaternion.identity);
                 if (tiles[i, y].Walkable == true)
                 {
                     if (tiles[i, y].IsStart)

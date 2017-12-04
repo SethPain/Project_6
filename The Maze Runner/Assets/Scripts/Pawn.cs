@@ -4,11 +4,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using MapGen;
 
-
-public class Pathfind : MonoBehaviour {
+public class Pawn : MonoBehaviour {
 
     public GameObject map;
-    public GameObject projectile;
+    public MapTile[,] playerTiles;
+    public Transform player;
     public MapTile[,] tiles;
     public Node startNode;
     public Node goalNode;
@@ -28,8 +28,9 @@ public class Pathfind : MonoBehaviour {
 
 
     // Use this for initialization
-    void Start() {
-        tiles = map.GetComponent<Map>().getTiles();
+    void Start()
+    {
+        playerTiles = map.GetComponent<Map>().getTiles();
         dimension = map.GetComponent<Map>().dimension;
         TODO = new List<Node>();
         DONE = new List<Node>();
@@ -37,42 +38,43 @@ public class Pathfind : MonoBehaviour {
         {
             for (int y = 0; y < dimension; y++)
             {
-                if (tiles[i, y].IsStart)
+                if (playerTiles[i, y].IsStart)
                 {
                     startNode = new Node(tiles[i, y], 0, 0, null);
                     TODO.Add(startNode);
                 }
-                else if (tiles[i, y].IsGoal)
+                else if (playerTiles[i, y].IsGoal)
                 {
                     goalNode = new Node(tiles[i, y]);
                 }
             }
         }
-        StartCoroutine(AStar());
+        //StartCoroutine(AStar());
 
-        
+
 
 
 
 
 
     }
-    
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         switch (state)
         {
-            //Pathfinding
+            //Sitting
             case 0:
-                // Default state, using A* to find goal
-                if (!pathing)
-                    StartCoroutine(AStar());
-                // if (enemy detected)
-                break;
-            //Fighting
+                // Default state, doing nothing
+                if ((player.transform.position - transform.position).magnitude <= 15)
+                {
+                    state = 1;
+                }
+                    break;
+            //Pathing
             case 1:
-                Instantiate(projectile, transform.position, Quaternion.identity);
-                // if (enemy dead)
+                Node goal = new Node(player.GetComponent<Pathfind>().current.tile);
                 break;
 
         }
@@ -101,7 +103,7 @@ public class Pathfind : MonoBehaviour {
     // This is the A* Algorithm, used to find an optimal path through the map
     IEnumerator AStar()
     {
-        
+
 
         //int count = 0;
         //foreach (Node item in TODO)
@@ -139,12 +141,12 @@ public class Pathfind : MonoBehaviour {
                     g = 10; // These are the adjacents of the start, so they have a g
                 else
                     g = current.parent.g + 10;
-                float h = (Mathf.Abs(goalNode.tile.X - current.tile.X) + Mathf.Abs(goalNode.tile.Y - current.tile.Y))*10;
+                float h = (Mathf.Abs(goalNode.tile.X - current.tile.X) + Mathf.Abs(goalNode.tile.Y - current.tile.Y)) * 10;
                 temp = new Node(item, g, h, current);
-                
 
 
-                if (DONE.Contains(temp) || !temp.tile.Walkable )//|| TODO.Contains(temp)) //This for some reason breaks the code
+
+                if (DONE.Contains(temp) || !temp.tile.Walkable)//|| TODO.Contains(temp)) //This for some reason breaks the code
                 {
                     //Debug.Log("%%%%%%%%%%   TODO contains " + TODO.Count + " elements on count " + count + " on tile: " + temp.toString());
                     //Debug.Log("&&&&&&&&&&   DONE contains " + DONE.Count + " elements on count " + count + " on tile: " + temp.toString());
@@ -167,7 +169,7 @@ public class Pathfind : MonoBehaviour {
                 //}
 
                 TODO.Add(temp);
-                
+
                 if (current.Equals(goalNode))
                     isSolved = true;
 
@@ -210,11 +212,11 @@ public class Pathfind : MonoBehaviour {
         {
             foreach (Node node in Solution)
             {
-                current = node;
                 StartCoroutine(Travel(node));
                 Solution.Remove(node);
             }
-        } catch { }
+        }
+        catch { }
         yield return new WaitForSeconds(10);
 
     }
@@ -247,7 +249,7 @@ public class Pathfind : MonoBehaviour {
         timer = 0;
         isTiming = true;
     }
-    
+
     void endTimer()
     {
         isTiming = false;

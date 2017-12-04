@@ -10,6 +10,8 @@ public class Node : System.IEquatable<Node> {
     public float h;
     public float f;
     public Node parent;
+    public Node child;
+
 
     public Node()
     {
@@ -52,14 +54,14 @@ public class Node : System.IEquatable<Node> {
         return "(" + tile.X + "," + tile.Y + ")";
     }
 
-    public List<MapTile> adjacents(MapTile[,] map)
+    public List<MapTile> adjacents(MapTile[,] map, int dimension)
     {
         List<MapTile> list = new List<MapTile>();
-        if (tile.X + 1 < 30)
+        if (tile.X + 1 < dimension)
             list.Add(map[tile.X + 1, tile.Y]);
         if (tile.X - 1 >= 0)
             list.Add(map[tile.X - 1, tile.Y]);
-        if (tile.Y + 1 < 30)
+        if (tile.Y + 1 < dimension)
             list.Add(map[tile.X, tile.Y + 1]);
         if (tile.Y - 1 >= 0)
             list.Add(map[tile.X, tile.Y - 1]);

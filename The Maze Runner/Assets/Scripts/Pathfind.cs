@@ -143,12 +143,12 @@ public class Pathfind : MonoBehaviour {
                     g = 10; // These are the adjacents of the start, so they have a g
                 else
                     g = current.parent.g + 10;
-                float h = (Mathf.Abs(goalNode.tile.X - current.tile.X) + Mathf.Abs(goalNode.tile.Y - current.tile.Y))*10;
+                float h = (Mathf.Abs(goalNode.tile.X - current.tile.X) + Mathf.Abs(goalNode.tile.Y - current.tile.Y)) * 10;
                 temp = new Node(item, g, h, current);
-                
 
 
-                if (DONE.Contains(temp) || !temp.tile.Walkable )//|| TODO.Contains(temp)) //This for some reason breaks the code
+
+                if (DONE.Contains(temp) || !temp.tile.Walkable)//|| TODO.Contains(temp)) //This for some reason breaks the code
                 {
                     //Debug.Log("%%%%%%%%%%   TODO contains " + TODO.Count + " elements on count " + count + " on tile: " + temp.toString());
                     //Debug.Log("&&&&&&&&&&   DONE contains " + DONE.Count + " elements on count " + count + " on tile: " + temp.toString());
@@ -171,13 +171,16 @@ public class Pathfind : MonoBehaviour {
                 //}
 
                 TODO.Add(temp);
-                
+
                 if (current.Equals(goalNode))
                     isSolved = true;
 
             }
             TODO.Remove(current);
             DONE.Add(current);
+
+            if (TODO.Count == 0)
+                SceneManager.LoadScene("Level_1");
 
 
             yield return 0;

@@ -14,9 +14,13 @@ public class Map : MonoBehaviour {
     public GameObject goal;
     public GameObject bound;
     public GameObject player;
+    public GameObject pawn;
+    public int pawn_count = 3;
     PrimGenerator prim;
     PerlinGenerator perlin;
     MapTile[,] tiles;
+    MapTile starttile;
+    MapTile goaltile;
 
     void Awake()
     {
@@ -34,7 +38,7 @@ public class Map : MonoBehaviour {
     // Use this for initialization
     void Start() {
         
-
+       
         
 
         for (int i = 0; i < dimension; i++)
@@ -49,18 +53,37 @@ public class Map : MonoBehaviour {
                 {
                     if (tiles[i, y].IsStart)
                     {
+                        starttile = tiles[i, y];
                         Instantiate(start, new Vector3(tiles[i, y].X, .005f, tiles[i, y].Y), Quaternion.identity);
                         player.transform.position = new Vector3(tiles[i, y].X, 1, tiles[i, y].Y);
                     }
                     else if (tiles[i, y].IsGoal)
+                    {
+                        goaltile = tiles[i, y];
                         Instantiate(goal, new Vector3(tiles[i, y].X, .005f, tiles[i, y].Y), Quaternion.identity);
+                    }
                     else
+                    {
                         Instantiate(floor, new Vector3(tiles[i, y].X, .005f, tiles[i, y].Y), Quaternion.identity);
+                    }
+                       
                 }
                 else
                     Instantiate(wall, new Vector3(tiles[i, y].X, 1, tiles[i, y].Y), Quaternion.identity);
             }
         }
+
+        while (pawn_count > 0)
+        {
+            int Hor = Random.Range(0, dimension);
+            int Ver = Random.Range(0, dimension);
+            if (tiles[Hor, Ver].Walkable && !tiles[Hor, Ver].IsStart && !tiles[Hor, Ver].IsGoal)
+            {
+                Instantiate(pawn, new Vector3(tiles[Hor, Ver].X, 1, tiles[Hor, Ver].Y), Quaternion.identity);
+                pawn_count--;
+            }
+        }
+
     }
 
     public MapTile[,] getTiles()

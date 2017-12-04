@@ -86,6 +86,8 @@ public class Pathfind : MonoBehaviour {
         {
             timer += Time.deltaTime;
         }
+        if (transform.position == new Vector3(goalNode.tile.X, transform.position.y, goalNode.tile.Y))
+            SceneManager.LoadScene("Level_1");
     }
 
     //This will draw the optimal path in spheres
@@ -114,6 +116,8 @@ public class Pathfind : MonoBehaviour {
         int count = 0;
         while (!isSolved)
         {
+            if (count > Mathf.Pow(dimension, 2))
+                SceneManager.LoadScene("Level_1");
             count++;
             minF = 10000;
             foreach (Node node in TODO)

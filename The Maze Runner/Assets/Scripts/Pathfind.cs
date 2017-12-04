@@ -9,6 +9,7 @@ public class Pathfind : MonoBehaviour {
 
     public GameObject map;
     public GameObject projectile;
+    public GameObject enemey;
     public MapTile[,] tiles;
     public Node startNode;
     public Node goalNode;
@@ -64,15 +65,37 @@ public class Pathfind : MonoBehaviour {
         {
             //Pathfinding
             case 0:
+                StartCoroutine(Go());
+                foreach (GameObject pawn in GameObject.FindGameObjectsWithTag("Enemy"))
+                {
+                    if ((pawn.transform.position - transform.position).magnitude < 3)
+                    {
+                        enemey = pawn;
+                        state = 2;
+                    }
+                }
+                break;
+            case 1:
                 // Default state, using A* to find goal
                 if (!pathing)
+                {
                     StartCoroutine(AStar());
-                // if (enemy detected)
+                    pathing = true;
+                }
+                state = 0;
                 break;
             //Fighting
-            case 1:
+            case 2:
+                StopAllCoroutines();
+                pathing = false;
                 Instantiate(projectile, transform.position, Quaternion.identity);
-                // if (enemy dead)
+                state = 3;
+                break;
+            case 3:
+                if (enemey == null)
+                {
+                    state = 1;
+                }
                 break;
 
         }
@@ -81,7 +104,6 @@ public class Pathfind : MonoBehaviour {
             SceneManager.LoadScene("Level_1");
         }
         //Traversal
-        StartCoroutine(Go());
         if (isTiming)
         {
             timer += Time.deltaTime;

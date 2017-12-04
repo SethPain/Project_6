@@ -246,6 +246,10 @@ Prefab:
       value: 
       objectReference: {fileID: 1284557844789264, guid: 65f23edf1a8fd8043a853c9a050a5525,
         type: 2}
+    - target: {fileID: 1211753570533116, guid: 850847c1ffa9c9f43942eade565e9a69, type: 2}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 850847c1ffa9c9f43942eade565e9a69, type: 2}
   m_IsPrefabParent: 0
@@ -276,9 +280,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc15adb3034ea3a41bff3ade62a5d1d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  primOrPerlin: dprim
-  dimension: 50
-  removOrConstrain: 20
+  primOrPerlin: prim
+  dimension: 20
+  removOrConstrain: 0.5
   wall: {fileID: 1239858670052744, guid: e499b0888835f8b44bfb2430cf0a423d, type: 2}
   floor: {fileID: 1848029012675700, guid: fe193c06d675e0342af248b0fedbe07a, type: 2}
   start: {fileID: 1486037744267708, guid: 76d449aab49c71b409f61ba885f7eeae, type: 2}
@@ -286,7 +290,6 @@ MonoBehaviour:
   bound: {fileID: 1055672464099224, guid: 2a9df7783208f6f4ea3c88046d884579, type: 2}
   player: {fileID: 853894394}
   pawn: {fileID: 1070770685744226, guid: 7f2b1df64a0c9844e8fd8fb16d736d1d, type: 2}
-  pawn_count: 4
 --- !u!4 &1484202407
 Transform:
   m_ObjectHideFlags: 0

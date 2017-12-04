@@ -36,7 +36,6 @@ public class Pawn : MonoBehaviour {
     void Start()
     {
         playerTiles = map.GetComponent<Map>().getTiles();
-        Debug.Log("The dim is : " + dimension);
         dimension = map.GetComponent<Map>().dimension;
         tiles = new MapTile[dimension, dimension];
         TODO = new List<Node>();
@@ -110,14 +109,7 @@ public class Pawn : MonoBehaviour {
     // This is the A* Algorithm, used to find an optimal path through the map
     IEnumerator AStar()
     {
-
-
-        //int count = 0;
-        //foreach (Node item in TODO)
-        //{
-        //    count++;
-        //}
-        //Debug.Log("The number of elements in TODO is: " + count);
+        
 
 
         int count = 0;
@@ -135,9 +127,7 @@ public class Pawn : MonoBehaviour {
 
             }
 
-
-            //Debug.Log("The first element is the start node: " + current.tile.IsStart);
-            //Debug.Log("Is the first elment also equal to null? " + current == null);
+            
             foreach (MapTile item in current.adjacents(tiles, dimension))
             {
 

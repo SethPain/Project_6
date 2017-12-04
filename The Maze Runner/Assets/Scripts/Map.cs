@@ -15,7 +15,7 @@ public class Map : MonoBehaviour {
     public GameObject bound;
     public GameObject player;
     public GameObject pawn;
-    public int pawn_count = 3;
+    int pawn_count = 2;
     PrimGenerator prim;
     PerlinGenerator perlin;
     MapTile[,] tiles;
@@ -72,7 +72,7 @@ public class Map : MonoBehaviour {
                     Instantiate(wall, new Vector3(tiles[i, y].X, 1, tiles[i, y].Y), Quaternion.identity);
             }
         }
-
+        
         while (pawn_count > 0)
         {
             int Hor = Random.Range(0, dimension);

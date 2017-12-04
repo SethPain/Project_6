@@ -25,13 +25,20 @@ public class Pawn : MonoBehaviour {
     public int state = 0;
     bool pathing = true;
 
-
+    void Awake()
+    {
+        map = GameObject.Find("Maze Generator");
+        //dimension = map.GetComponent<Map>().dimension;
+        player = GameObject.Find("Player").transform;
+    }
 
     // Use this for initialization
     void Start()
     {
         playerTiles = map.GetComponent<Map>().getTiles();
+        Debug.Log("The dim is : " + dimension);
         dimension = map.GetComponent<Map>().dimension;
+        tiles = new MapTile[dimension, dimension];
         TODO = new List<Node>();
         DONE = new List<Node>();
         for (int i = 0; i < dimension; i++)

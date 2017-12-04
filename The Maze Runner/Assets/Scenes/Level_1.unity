@@ -229,7 +229,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4754278702945368, guid: 850847c1ffa9c9f43942eade565e9a69, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114052014350810100, guid: 850847c1ffa9c9f43942eade565e9a69,
         type: 2}
@@ -285,7 +285,7 @@ MonoBehaviour:
   goal: {fileID: 1643200187937918, guid: d2d99537331fbd148aa0a517cc59096c, type: 2}
   bound: {fileID: 1055672464099224, guid: 2a9df7783208f6f4ea3c88046d884579, type: 2}
   player: {fileID: 853894394}
-  pawn: {fileID: 1774499418528398, guid: fa8660c7f13275e4391856a4fec7f508, type: 2}
+  pawn: {fileID: 1070770685744226, guid: 7f2b1df64a0c9844e8fd8fb16d736d1d, type: 2}
   pawn_count: 4
 --- !u!4 &1484202407
 Transform:
@@ -298,5 +298,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -11,6 +11,7 @@ public class Pawn : MonoBehaviour {
     public Transform player;
     public MapTile[,] tiles;
     public Node startNode;
+    public MapTile given;
     public Node goalNode;
     public Node current;
     private float timer;
@@ -30,6 +31,9 @@ public class Pawn : MonoBehaviour {
         map = GameObject.Find("Maze Generator");
         //dimension = map.GetComponent<Map>().dimension;
         player = GameObject.Find("Player").transform;
+        
+
+        
     }
 
     // Use this for initialization
@@ -44,17 +48,17 @@ public class Pawn : MonoBehaviour {
         {
             for (int y = 0; y < dimension; y++)
             {
-                if (playerTiles[i, y].IsStart)
+                tiles[i, y] = new MapTile(playerTiles[i, y].X, playerTiles[i, y].Y);
+                if (playerTiles[i, y].Walkable)
                 {
-                    startNode = new Node(tiles[i, y], 0, 0, null);
-                    TODO.Add(startNode);
-                }
-                else if (playerTiles[i, y].IsGoal)
-                {
-                    goalNode = new Node(tiles[i, y]);
+                    tiles[i, y].Walkable = true;
                 }
             }
         }
+        tiles[(int)transform.position.x, (int)transform.position.y].IsStart = true;
+        startNode = new Node(tiles[given.X, given.Y], 0, 0, null);
+        TODO.Add(startNode);
+
         //StartCoroutine(AStar());
 
 
@@ -73,23 +77,31 @@ public class Pawn : MonoBehaviour {
             //Sitting
             case 0:
                 // Default state, doing nothing
-                if ((player.transform.position - transform.position).magnitude <= 15)
+                if ((player.transform.position - transform.position).magnitude <= 10)
                 {
                     state = 1;
                 }
                     break;
             //Pathing
             case 1:
-                Node goal = new Node(player.GetComponent<Pathfind>().current.tile);
+                goalNode = new Node(player.GetComponent<Pathfind>().current.tile);
+                //Debug.Log(goalNode.tile.X + " " + goalNode.tile.Y);
+                StartCoroutine(AStar());
+                state = 2;
+                break;
+            case 2:
+                StartCoroutine(Go());
+                if ((player.transform.position - transform.position).magnitude <= 3)
+                {
+                    state = 3;
+                }
+                break;
+            case 3:
+                StopAllCoroutines();
                 break;
 
         }
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            SceneManager.LoadScene("Level_1");
-        }
         //Traversal
-        StartCoroutine(Go());
         if (isTiming)
         {
             timer += Time.deltaTime;
@@ -101,7 +113,7 @@ public class Pawn : MonoBehaviour {
     {
         foreach (Node n in Solution)
         {
-            Gizmos.color = Color.magenta;
+            Gizmos.color = Color.cyan;
             Gizmos.DrawSphere(new Vector3(n.tile.X, 1, n.tile.Y), 0.25f);
         }
     }
@@ -132,18 +144,20 @@ public class Pawn : MonoBehaviour {
             {
 
                 //Debug.Log(current.tile.X + " , " + current.tile.Y);
-                //Debug.Log("The adjacents are: " + item.IsStart);
                 float g;
                 if (current.Equals(startNode))
                     g = 10; // These are the adjacents of the start, so they have a g
                 else
+                {
                     g = current.parent.g + 10;
+                }
+                   
                 float h = (Mathf.Abs(goalNode.tile.X - current.tile.X) + Mathf.Abs(goalNode.tile.Y - current.tile.Y)) * 10;
                 temp = new Node(item, g, h, current);
 
 
 
-                if (DONE.Contains(temp) || !temp.tile.Walkable)//|| TODO.Contains(temp)) //This for some reason breaks the code
+                if (DONE.Contains(temp) || !temp.tile.Walkable)// || TODO.Contains(temp)) //This for some reason breaks the code
                 {
                     //Debug.Log("%%%%%%%%%%   TODO contains " + TODO.Count + " elements on count " + count + " on tile: " + temp.toString());
                     //Debug.Log("&&&&&&&&&&   DONE contains " + DONE.Count + " elements on count " + count + " on tile: " + temp.toString());
@@ -166,21 +180,16 @@ public class Pawn : MonoBehaviour {
                 //}
 
                 TODO.Add(temp);
-
                 if (current.Equals(goalNode))
                     isSolved = true;
-
             }
+            //Debug.Log("Do we get here?");
             TODO.Remove(current);
             DONE.Add(current);
 
 
             yield return 0;
         }
-        Debug.Log(goalNode.tile.X);
-        Debug.Log(goalNode.tile.Y);
-        Debug.Log(current.tile.X);
-        Debug.Log(current.tile.Y);
         while (current.parent != null)
         {
             Solution.Add(current);

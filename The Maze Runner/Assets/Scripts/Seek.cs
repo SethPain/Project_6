@@ -17,7 +17,7 @@ public class Seek : MonoBehaviour {
 
     void Awake()
     {
-        target = GameObject.FindGameObjectWithTag("Player").GetComponent<Pathfind>().enemey;
+        target = GameObject.FindGameObjectWithTag("Player").GetComponent<Pathfind>().enemy;
         previousPosition = transform.position;  // Initialize the seeking object's previous position
         currentPosition = transform.position;   // Initialize the seeking object's current position
 
@@ -45,12 +45,11 @@ public class Seek : MonoBehaviour {
                                                 // transform.rotation = Quaternion.LookRotation(targetPosition); // Make the seeking object face the target?
             transform.position = (transform.position + velocity);   // Apply the velocity to the seeking object
         }
-       
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter()
     {
-        if (other.gameObject.CompareTag("Enemy"))
-            Destroy(gameObject);
+        Destroy(gameObject, 1.25f);
     }
+    
 }

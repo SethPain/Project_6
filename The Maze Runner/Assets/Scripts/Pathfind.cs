@@ -9,7 +9,7 @@ public class Pathfind : MonoBehaviour {
 
     public GameObject map;
     public GameObject projectile;
-    public GameObject enemey;
+    public GameObject enemy;
     public MapTile[,] tiles;
     public Node startNode;
     public Node goalNode;
@@ -24,7 +24,6 @@ public class Pathfind : MonoBehaviour {
     List<Node> DONE;
     bool isTiming = false;
     public int state = 0;
-    bool pathing = true;
 
 
 
@@ -70,29 +69,38 @@ public class Pathfind : MonoBehaviour {
                 {
                     if ((pawn.transform.position - transform.position).magnitude < 3)
                     {
-                        enemey = pawn;
+                        enemy = pawn;
                         state = 2;
                     }
                 }
                 break;
             case 1:
                 // Default state, using A* to find goal
-                if (!pathing)
+                if (!isSolved)
                 {
                     StartCoroutine(AStar());
-                    pathing = true;
                 }
                 state = 0;
                 break;
             //Fighting
             case 2:
                 StopAllCoroutines();
-                pathing = false;
                 Instantiate(projectile, transform.position, Quaternion.identity);
                 state = 3;
                 break;
             case 3:
-                if (enemey == null)
+                foreach (GameObject pawn in GameObject.FindGameObjectsWithTag("Enemy"))
+                {
+                    if ((pawn.transform.position - transform.position).magnitude < 3)
+                    {
+                        enemy = pawn;
+                        Instantiate(projectile, transform.position, Quaternion.identity);
+                    }
+                }
+                state = 4;
+                break;
+            case 4:
+                if (enemy == null)
                 {
                     state = 1;
                 }
@@ -207,10 +215,10 @@ public class Pathfind : MonoBehaviour {
 
             yield return 0;
         }
-        Debug.Log(goalNode.tile.X);
-        Debug.Log(goalNode.tile.Y);
-        Debug.Log(current.tile.X);
-        Debug.Log(current.tile.Y);
+        //Debug.Log(goalNode.tile.X);
+        //Debug.Log(goalNode.tile.Y);
+        //Debug.Log(current.tile.X);
+        //Debug.Log(current.tile.Y);
         while (current.parent != null)
         {
             Solution.Add(current);

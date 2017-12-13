@@ -15,6 +15,7 @@ public class Map : MonoBehaviour {
     public GameObject bound;
     public GameObject player;
     public GameObject pawn;
+    public GameObject boss;
     int pawn_count = 2;
     PrimGenerator prim;
     PerlinGenerator perlin;
@@ -61,6 +62,7 @@ public class Map : MonoBehaviour {
                     {
                         goaltile = tiles[i, y];
                         Instantiate(goal, new Vector3(tiles[i, y].X, .005f, tiles[i, y].Y), Quaternion.identity);
+                        Instantiate(boss, new Vector3(tiles[i, y].X, 1, tiles[i, y].Y), Quaternion.identity);
                     }
                     else
                     {
@@ -79,7 +81,8 @@ public class Map : MonoBehaviour {
             int Ver = Random.Range(0, dimension);
             if (tiles[Hor, Ver].Walkable && !tiles[Hor, Ver].IsStart && !tiles[Hor, Ver].IsGoal)
             {
-                Instantiate(pawn, new Vector3(tiles[Hor, Ver].X, 1, tiles[Hor, Ver].Y), Quaternion.identity);
+                GameObject temp = Instantiate(pawn, new Vector3(tiles[Hor, Ver].X, 1, tiles[Hor, Ver].Y), Quaternion.identity);
+                temp.GetComponent<Pawn>().given = tiles[Hor, Ver];
                 pawn_count--;
             }
         }

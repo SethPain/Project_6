@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: cedc8402df5288c499545d4a26057023
+timeCreated: 1512447406
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Goudy Stout
+  fontNames:
+  - Goudy Stout
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

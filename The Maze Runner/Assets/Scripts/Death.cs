@@ -7,6 +7,10 @@ public class Death : MonoBehaviour {
 	void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Bullet"))
+        {
+            DestroyObject(GameObject.FindGameObjectWithTag("Bullet"));
             Destroy(gameObject);
+        }
+
     }
 }
